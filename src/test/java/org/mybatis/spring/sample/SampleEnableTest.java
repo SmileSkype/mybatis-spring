@@ -22,7 +22,7 @@ import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 /**
  * Test to ensure that the {@link MapperScan} annotation works as expected.
- *
+ * 基于 @MapperScan 注解，扫描指定包
  * @since 1.2.0
  */
 @SpringJUnitConfig

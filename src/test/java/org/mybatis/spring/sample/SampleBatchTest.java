@@ -19,6 +19,8 @@ import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 /**
  * Example of MyBatis-Spring batch integration usage.
+ * 在 SampleMapperTest 的基础上，使用 BatchExecutor 执行器
+ * 注解的测试类 @ExtendWith和@ContextConfiguration可以合并，写复合注解@SpringJUnitConfig(locations="classpath:applicationContext.xml")
  */
 @SpringJUnitConfig(locations = { "classpath:org/mybatis/spring/sample/config/applicationContext-batch.xml" })
 class SampleBatchTest extends AbstractSampleTest {

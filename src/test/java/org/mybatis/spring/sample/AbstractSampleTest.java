@@ -22,7 +22,9 @@ import org.mybatis.spring.sample.domain.User;
 import org.mybatis.spring.sample.service.FooService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
-
+/*
+ 单元测试基类 每种实现类，都对应其配置类或配置文件。胖友可以根据自己需要，运行 AbstractSampleTest 时，选择对应的实现类
+ */
 @DirtiesContext
 abstract class AbstractSampleTest {
 
