@@ -50,11 +50,23 @@ import org.springframework.beans.factory.FactoryBean;
  * @author Eduardo Macarron
  *
  * @see SqlSessionTemplate
+ * 实现 FactoryBean 接口，继承 SqlSessionDaoSupport 抽象类，创建 Mapper 对象
+ * <bean id="userMapper" class="org.mybatis.spring.mapper.MapperFactoryBean" autowire="byType">
+ * 	<property name="mapperInterface" value="org.mybatis.spring.sample.mapper.UserMapper" />
+ * </bean>
+ *
+ *
  */
 public class MapperFactoryBean<T> extends SqlSessionDaoSupport implements FactoryBean<T> {
 
+  /**
+   * Mapper 接口
+   */
   private Class<T> mapperInterface;
 
+  /**
+   * 是否添加到 {@link Configuration} 中
+   */
   private boolean addToConfig = true;
 
   public MapperFactoryBean() {
@@ -66,14 +78,15 @@ public class MapperFactoryBean<T> extends SqlSessionDaoSupport implements Factor
   }
 
   /**
-   * {@inheritDoc}
+   * {@inheritDoc} 该方法，是在 org.springframework.dao.support.DaoSupport 定义，被 #afterPropertiesSet() 方法所调用
    */
   @Override
   protected void checkDaoConfig() {
+    // <1> 校验 sqlSessionTemplate 非空
     super.checkDaoConfig();
-
+    // <2> 校验 mapperInterface 非空
     notNull(this.mapperInterface, "Property 'mapperInterface' is required");
-
+    // <3> 添加 Mapper 接口到 configuration 中
     Configuration configuration = getSqlSession().getConfiguration();
     if (this.addToConfig && !configuration.hasMapper(this.mapperInterface)) {
       try {
@@ -89,6 +102,7 @@ public class MapperFactoryBean<T> extends SqlSessionDaoSupport implements Factor
 
   /**
    * {@inheritDoc}
+   * 获得 Mapper 对象。注意，返回的是基于 Mapper 接口自动生成的代理对象
    */
   @Override
   public T getObject() throws Exception {

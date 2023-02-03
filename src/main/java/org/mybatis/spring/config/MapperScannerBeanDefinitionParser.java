@@ -33,7 +33,7 @@ import org.w3c.dom.Element;
 
 /**
  * A {#code BeanDefinitionParser} that handles the element scan of the MyBatis. namespace
- * 
+ *
  * @author Lishu Luo
  * @author Eduardo Macarron
  *
@@ -41,6 +41,8 @@ import org.w3c.dom.Element;
  * @see MapperFactoryBean
  * @see ClassPathMapperScanner
  * @see MapperScannerConfigurer
+ *
+ * 继承 AbstractBeanDefinitionParser 接口，<mybatis:scan /> 的解析器。
  */
 
 public class MapperScannerBeanDefinitionParser extends AbstractBeanDefinitionParser {
@@ -56,17 +58,19 @@ public class MapperScannerBeanDefinitionParser extends AbstractBeanDefinitionPar
 
   /**
    * {@inheritDoc}
-   * 
+   *
    * @since 2.0.2
    */
   @Override
   protected AbstractBeanDefinition parseInternal(Element element, ParserContext parserContext) {
+    // 1、 创建BeanDefinitionBuilder对象
     BeanDefinitionBuilder builder = BeanDefinitionBuilder.genericBeanDefinition(MapperScannerConfigurer.class);
 
     ClassLoader classLoader = ClassUtils.getDefaultClassLoader();
 
     builder.addPropertyValue("processPropertyPlaceHolders", true);
     try {
+      // 解析 annotation 属性
       String annotationClassName = element.getAttribute(ATTRIBUTE_ANNOTATION);
       if (StringUtils.hasText(annotationClassName)) {
         @SuppressWarnings("unchecked")
@@ -74,17 +78,21 @@ public class MapperScannerBeanDefinitionParser extends AbstractBeanDefinitionPar
             .loadClass(annotationClassName);
         builder.addPropertyValue("annotationClass", annotationClass);
       }
+
+      // 解析 marker-interface 属性
       String markerInterfaceClassName = element.getAttribute(ATTRIBUTE_MARKER_INTERFACE);
       if (StringUtils.hasText(markerInterfaceClassName)) {
         Class<?> markerInterface = classLoader.loadClass(markerInterfaceClassName);
         builder.addPropertyValue("markerInterface", markerInterface);
       }
+      // 解析 name-generator 属性
       String nameGeneratorClassName = element.getAttribute(ATTRIBUTE_NAME_GENERATOR);
       if (StringUtils.hasText(nameGeneratorClassName)) {
         Class<?> nameGeneratorClass = classLoader.loadClass(nameGeneratorClassName);
         BeanNameGenerator nameGenerator = BeanUtils.instantiateClass(nameGeneratorClass, BeanNameGenerator.class);
         builder.addPropertyValue("nameGenerator", nameGenerator);
       }
+
       String mapperFactoryBeanClassName = element.getAttribute(ATTRIBUTE_MAPPER_FACTORY_BEAN_CLASS);
       if (StringUtils.hasText(mapperFactoryBeanClassName)) {
         @SuppressWarnings("unchecked")
@@ -107,7 +115,7 @@ public class MapperScannerBeanDefinitionParser extends AbstractBeanDefinitionPar
 
   /**
    * {@inheritDoc}
-   * 
+   *
    * @since 2.0.2
    */
   @Override

@@ -23,6 +23,7 @@
   targetNamespace="http://mybatis.org/schema/mybatis-spring"
   elementFormDefault="qualified" attributeFormDefault="unqualified">
 
+  <!-- META-INF/spring.schemas 指向该文件 -->
   <xsd:element name="scan">
     <xsd:annotation>
       <xsd:documentation>

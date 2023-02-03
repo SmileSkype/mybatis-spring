@@ -34,5 +34,8 @@
     <!-- Scan for mappers and let them be autowired; notice there is no
          UserDaoImplementation needed. The required SqlSessionFactory will be
          autowired. -->
+    <!--  自定义mybatis:scan标签  和@MapperScan 注解 用途是等价的
+        可以使用org.mybatis.spring.sample.SampleNamespaceTest来调试
+    -->
     <mybatis:scan base-package="org.mybatis.spring.sample.mapper" />
 </beans>
