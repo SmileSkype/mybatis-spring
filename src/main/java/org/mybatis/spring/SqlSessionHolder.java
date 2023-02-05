@@ -29,13 +29,20 @@ import org.springframework.transaction.support.ResourceHolderSupport;
  *
  * @author Hunter Presnall
  * @author Eduardo Macarron
+ * SqlSession持有器,用于保存SqlSession对象,保存到 org.springframework.transaction.support.TransactionSynchronizationManager
  */
 public final class SqlSessionHolder extends ResourceHolderSupport {
-
+  /**
+   * SqlSession 对象
+   */
   private final SqlSession sqlSession;
-
+  /**
+   * 执行器类型
+   */
   private final ExecutorType executorType;
-
+  /**
+   * PersistenceExceptionTranslator 对象
+   */
   private final PersistenceExceptionTranslator exceptionTranslator;
 
   /**

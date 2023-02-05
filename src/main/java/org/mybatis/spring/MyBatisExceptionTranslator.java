@@ -35,6 +35,7 @@ import org.springframework.transaction.TransactionException;
  * translated.
  *
  * @author Eduardo Macarron
+ * Mybatis 自定义的异常转换器
  */
 public class MyBatisExceptionTranslator implements PersistenceExceptionTranslator {
 

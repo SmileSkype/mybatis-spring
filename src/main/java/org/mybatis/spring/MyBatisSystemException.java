@@ -25,6 +25,7 @@ import org.springframework.dao.UncategorizedDataAccessException;
  * wrapper class to bring everything under a single hierarchy will be easier for client code to handle.
  *
  * @author Hunter Presnall
+ * Mybatis 自定义的异常类
  */
 @SuppressWarnings("squid:MaximumInheritanceDepth") // It is the intended design
 public class MyBatisSystemException extends UncategorizedDataAccessException {
