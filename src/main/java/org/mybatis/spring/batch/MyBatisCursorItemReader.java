@@ -31,18 +31,33 @@ import org.springframework.beans.factory.InitializingBean;
 
 /**
  * @author Guillaume Darmont / guillaume@dropinocean.com
+ * 基于Cursor的Mybatis的读取器
  */
 public class MyBatisCursorItemReader<T> extends AbstractItemCountingItemStreamItemReader<T>
     implements InitializingBean {
-
+  /**
+   * 查询编号
+   */
   private String queryId;
-
+  /**
+   * SqlSessionFactory 对象
+   */
   private SqlSessionFactory sqlSessionFactory;
+  /**
+   * SqlSession 对象
+   */
   private SqlSession sqlSession;
-
+  /**
+   * 参数值的映射
+   */
   private Map<String, Object> parameterValues;
-
+  /**
+   * Cursor 对象
+   */
   private Cursor<T> cursor;
+  /**
+   * {@link #cursor} 的迭代器
+   */
   private Iterator<T> cursorIterator;
 
   public MyBatisCursorItemReader() {
@@ -51,25 +66,38 @@ public class MyBatisCursorItemReader<T> extends AbstractItemCountingItemStreamIt
 
   @Override
   protected T doRead() {
+    // 置空 next
     T next = null;
+    // 读取下一条
     if (cursorIterator.hasNext()) {
       next = cursorIterator.next();
     }
+    // 返回
     return next;
   }
 
+  /**
+   * 打开 Cursor
+   */
   @Override
   protected void doOpen() {
+    // <1> 创建 parameters 参数
     Map<String, Object> parameters = new HashMap<>();
     if (parameterValues != null) {
       parameters.putAll(parameterValues);
     }
-
+    // <2> 创建 SqlSession 对象
     sqlSession = sqlSessionFactory.openSession(ExecutorType.SIMPLE);
+    // <3.1> 查询，返回 Cursor 对象
     cursor = sqlSession.selectCursor(queryId, parameters);
+    // <3.2> 获得 cursor 的迭代器
     cursorIterator = cursor.iterator();
   }
 
+  /**
+   * 关闭 Cursor 和 SqlSession 对象
+   * @throws Exception
+   */
   @Override
   protected void doClose() throws Exception {
     if (cursor != null) {
